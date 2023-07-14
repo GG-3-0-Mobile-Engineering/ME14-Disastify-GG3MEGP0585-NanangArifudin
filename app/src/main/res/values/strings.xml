@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Disastify</string>
+    <string name="disaster_name">Disaster Name</string>
+</resources>
