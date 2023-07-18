@@ -13,12 +13,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/button_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_disaster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>
