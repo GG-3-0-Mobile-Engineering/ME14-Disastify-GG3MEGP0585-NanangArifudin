@@ -1,6 +1,6 @@
-package com.arfdn.disastify.data
+package com.arfdn.disastify.data.model
 
-data class Disaster (
+data class DisasterDummy (
     val nameDisaster: String="",
     val disasterType: String="",
     val disasterImage: String="",

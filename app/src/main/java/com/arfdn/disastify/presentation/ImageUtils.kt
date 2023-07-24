@@ -1,4 +1,4 @@
-package com.arfdn.disastify.view
+package com.arfdn.disastify.presentation
 
 import android.content.Context
 import android.widget.ImageView

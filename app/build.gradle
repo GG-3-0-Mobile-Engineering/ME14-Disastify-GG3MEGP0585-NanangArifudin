@@ -37,6 +37,22 @@ android {
 
 }
 
+ext {
+    // Koin
+    koin_version = '3.1.2'
+
+    // Retrofit
+    retrofit_version = '2.9.0'
+    okhttp_version = '4.9.2'
+
+    // Coroutines
+    coroutines_version = '1.5.2'
+
+
+    // Lifecycle components
+    lifecycle_version = '2.3.1'
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -45,6 +61,25 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    implementation 'com.google.code.gson:gson:2.9.0'
+    // Koin
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

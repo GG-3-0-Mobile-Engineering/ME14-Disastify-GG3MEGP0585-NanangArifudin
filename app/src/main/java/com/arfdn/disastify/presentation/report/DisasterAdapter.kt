@@ -1,18 +1,18 @@
-package com.arfdn.disastify.view.list_disaster
+package com.arfdn.disastify.presentation.report
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.arfdn.disastify.data.Disaster
+import com.arfdn.disastify.data.model.DisasterDummy
 import com.arfdn.disastify.databinding.ItemDisasterBinding
-import com.arfdn.disastify.view.loadImage
+import com.arfdn.disastify.presentation.loadImage
 
-typealias OnClickDisaster = (Disaster) -> Unit
-class DisasterAdapter(private val listDisaster: List<Disaster>, private val onClickDisaster: OnClickDisaster) :
+typealias OnClickDisaster = (DisasterDummy) -> Unit
+class DisasterAdapter(private val listDisaster: List<DisasterDummy>, private val onClickDisaster: OnClickDisaster) :
     RecyclerView.Adapter<DisasterAdapter.ItemDisasterViewHolder>() {
     inner class ItemDisasterViewHolder(private val binding: ItemDisasterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Disaster) {
+        fun bind(data: DisasterDummy) {
             with(binding) {
                 txtDisasterName.text = data.nameDisaster
                 txtDisasterType.text = data.disasterType

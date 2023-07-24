@@ -1,4 +1,4 @@
-package com.arfdn.disastify
+package com.arfdn.disastify.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
