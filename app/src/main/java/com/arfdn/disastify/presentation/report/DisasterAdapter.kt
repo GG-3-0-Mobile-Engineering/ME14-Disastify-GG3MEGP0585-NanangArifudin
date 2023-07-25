@@ -4,19 +4,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arfdn.disastify.data.model.DisasterDummy
+import com.arfdn.disastify.data.model.Geometry
 import com.arfdn.disastify.databinding.ItemDisasterBinding
+import com.arfdn.disastify.domain.model.Disaster
 import com.arfdn.disastify.utils.loadImage
 
-typealias OnClickDisaster = (DisasterDummy) -> Unit
-class DisasterAdapter(private val listDisaster: List<DisasterDummy>, private val onClickDisaster: OnClickDisaster) :
+typealias OnClickDisaster = (Geometry) -> Unit
+class DisasterAdapter(private val listDisaster: List<Geometry>, private val onClickDisaster: OnClickDisaster) :
     RecyclerView.Adapter<DisasterAdapter.ItemDisasterViewHolder>() {
     inner class ItemDisasterViewHolder(private val binding: ItemDisasterBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: DisasterDummy) {
+        fun bind(data: Geometry) {
             with(binding) {
-                txtDisasterName.text = data.nameDisaster
-                txtDisasterType.text = data.disasterType
-                imgDisaster.loadImage(itemView.context, data.disasterImage)
+                txtDisasterName.text = data.properties.text
+                txtDisasterType.text = data.properties.disasterType
+                imgDisaster.loadImage(itemView.context, data.properties.imageUrl ?: "")
                 itemView.setOnClickListener {
                     onClickDisaster(data)
                 }

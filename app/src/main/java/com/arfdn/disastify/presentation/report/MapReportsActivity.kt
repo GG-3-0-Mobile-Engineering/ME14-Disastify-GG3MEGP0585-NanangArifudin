@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import com.arfdn.disastify.R
+import com.arfdn.disastify.data.model.Geometry
 import com.arfdn.disastify.data.model.provinces
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,7 +27,7 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapReportsBinding
     private val disasterListViewModel: DisasterListViewModel by viewModel()
-    val chipData = arrayListOf<String>("flood", "haze", "fire", "wind", "volcano", "earthquake")
+    val chipData = arrayListOf<String>("all","flood", "haze", "fire", "wind", "volcano", "earthquake")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
             layoutSearchFilter.circleImageView.setOnClickListener {
                 this@MapReportsActivity.startActivity<ProfileActivity>()
             }
+
         }
 
     }
@@ -72,36 +74,65 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
             val dataJson = gson.toJson(disasters)
             Log.d("cekmapp", "onMapReady:  ${dataJson}")
 
-            val bottomSheetFragment = ListDisasterBottomSheetDialogFragment()
-            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
+            disasters.result?.objects?.output?.geometries?.let { geo ->
+                showBottomSheet(geo)
+                binding.fab.setOnClickListener {
+                    showBottomSheet(geo)
+                }
+            }
+
 
             disasters.result?.objects?.output?.geometries?.forEach { geo ->
                 val sydney =
                     LatLng(geo.coordinates[1], geo.coordinates[0])
                 mMap.addMarker(
                     MarkerOptions().position(sydney)
-                        .title((geo.properties.title ?: "-").toString())
+                        .title((geo.properties.text ?: "-").toString())
                 )
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f))
 
             }
             for (chipText in chipData) {
                 val chip = Chip(this@MapReportsActivity)
                 chip.text = chipText
                 chip.isAllCaps = true
-//                chip.setChipIconResource(R.drawable.ic_plus)
                 chip.isCheckable = true
                 chip.isCloseIconVisible = false
                 binding.layoutSearchFilter.chipGroup.addView(chip)
+                chip.setOnClickListener {
+                    val selectedChipText = chip.text.toString()
+                    val typeSelected = selectedChipText.lowercase()
+                    if (typeSelected=="all"){
+                        disasterListViewModel.getDisasterReports(null, null, null)
+                    } else disasterListViewModel.getDisasterReports(null, null, typeSelected)
+                    Log.d("SelectedChip", "Selected: $selectedChipText")
+                }
             }
-
-
         })
 
         val provinceNames = provinces.values.toList()
+        val reversedProvinces = provinces.entries.associate { it.value to it.key }
 
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, provinceNames)
         binding.layoutSearchFilter.edtSearch.setAdapter(adapter)
+        binding.layoutSearchFilter.edtSearch.setOnItemClickListener { adapterView, view, position, id ->
+            val selectedProvince = adapterView.getItemAtPosition(position).toString()
+            val provinceId = reversedProvinces[selectedProvince]
 
+            if (provinceId != null) {
+                // The province ID was found in the map
+                disasterListViewModel.getDisasterReports(null, provinceId.toString(),null )
+                println("Province: $selectedProvince, Province ID: $provinceId")
+            } else {
+                println("Province: $selectedProvince not found.")
+            }
+        }
+
+    }
+
+    private fun showBottomSheet(geo: List<Geometry>) {
+        val bottomSheetFragment = ListDisasterBottomSheetDialogFragment(geo)
+        bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
 }

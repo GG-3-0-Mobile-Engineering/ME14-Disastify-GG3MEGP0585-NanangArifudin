@@ -19,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         with(binding){
-            root.setOnClickListener {
-                val bottomSheetFragment = ListDisasterBottomSheetDialogFragment()
-                bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
-            }
+//            root.setOnClickListener {
+//                val bottomSheetFragment = ListDisasterBottomSheetDialogFragment()
+//                bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
+//            }
 
 
 

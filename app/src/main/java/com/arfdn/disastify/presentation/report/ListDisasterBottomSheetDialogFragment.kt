@@ -12,12 +12,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arfdn.disastify.utils.bindFragment
 import com.arfdn.disastify.data.model.DisasterDummy
+import com.arfdn.disastify.data.model.Geometry
 import com.arfdn.disastify.databinding.ListDisasterBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ListDisasterBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class ListDisasterBottomSheetDialogFragment(val listDisaster:List<Geometry>) : BottomSheetDialogFragment() {
 
     private val binding by bindFragment(ListDisasterBottomSheetBinding::inflate)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -26,8 +27,9 @@ class ListDisasterBottomSheetDialogFragment : BottomSheetDialogFragment() {
             val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.let {
                 val behavior = BottomSheetBehavior.from(it) // use let to execute the code only if the view is not null
-                behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED // show 1/3 of the screen by default
-                behavior.peekHeight = 0 // remove the default peek height
+                behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                behavior.isDraggable= true // show 1/3 of the screen by default
+                behavior.peekHeight = 100 // remove the default peek height
                 behavior.isHideable = false // prevent the user from swiping down to hide the bottom sheet
             }
         }
@@ -42,8 +44,8 @@ class ListDisasterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapterDisaster = DisasterAdapter(generateDummy()) { disaster ->
-            Toast.makeText(context, "You clicked on ${disaster.nameDisaster}", Toast.LENGTH_SHORT).show()
+        val adapterDisaster = DisasterAdapter(listDisaster) { disaster ->
+            Toast.makeText(context, "You clicked on ${disaster.properties.createdAt}", Toast.LENGTH_SHORT).show()
         }
         with(binding){
             rvDisaster.apply {
