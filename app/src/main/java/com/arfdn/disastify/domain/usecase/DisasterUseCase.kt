@@ -4,7 +4,7 @@ import com.arfdn.disastify.domain.model.Disaster
 import com.arfdn.disastify.domain.repository.DisasterRepository
 
 class DisasterUseCase(private val disasterRepository: DisasterRepository) {
-    suspend fun getDisasterReports(): List<Disaster> {
+    suspend fun getDisasterReports(): Disaster {
         return disasterRepository.getDisasterReports()
     }
 }

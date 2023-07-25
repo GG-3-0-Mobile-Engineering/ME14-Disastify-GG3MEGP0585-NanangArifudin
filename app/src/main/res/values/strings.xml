@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Disastify</string>
     <string name="disaster_name">Disaster Name</string>
+    <string name="title_activity_map_reports">MapReportsActivity</string>
 </resources>

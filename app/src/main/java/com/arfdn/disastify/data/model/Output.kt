@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Output(
     @SerializedName("geometries")
-    val geometries: List<Geometry?>? = listOf(),
+    val geometries: List<Geometry> = listOf(),
     @SerializedName("type")
-    val type: String? = ""
+    val type: String = ""
 )

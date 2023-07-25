@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class Objects(
     @SerializedName("output")
-    val output: Output? = Output()
+    val output: Output = Output()
 )

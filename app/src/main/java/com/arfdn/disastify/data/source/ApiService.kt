@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("reports")
-    suspend fun getDisasterReports(): List<DisasterResponse>
+    suspend fun getDisasterReports(): DisasterResponse
 }
