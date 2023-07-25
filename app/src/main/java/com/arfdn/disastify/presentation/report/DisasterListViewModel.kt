@@ -13,10 +13,10 @@ class DisasterListViewModel(private val useCase: DisasterUseCase) : ViewModel() 
     private val _disasterList = MutableLiveData<Disaster>()
     val disasterList: LiveData<Disaster> get() = _disasterList
 
-    fun getDisasterReports() {
+    fun getDisasterReports(timeperiod: String?,admin: String?,disaster: String?) {
         viewModelScope.launch {
             try {
-                val disasters = useCase.getDisasterReports()
+                val disasters = useCase.getDisasterReports(timeperiod,admin, disaster)
                 _disasterList.postValue(disasters)
                 Log.d("DisasterDataViewModel", "Disaster Data Retrieved: ${disasters.result?.type ?: "nodata"}")
             } catch (e: Exception) {

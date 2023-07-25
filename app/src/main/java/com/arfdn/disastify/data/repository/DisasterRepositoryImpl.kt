@@ -7,8 +7,8 @@ import com.arfdn.disastify.domain.repository.DisasterRepository
 
 class DisasterRepositoryImpl(private val remoteDataSource: DisasterDataSource) :
     DisasterRepository {
-    override suspend fun getDisasterReports(): Disaster {
+    override suspend fun getDisasterReports(timeperiod: String?,admin: String?,disaster: String?): Disaster {
         // You may perform any additional data mapping or transformations here
-        return Disaster(remoteDataSource.getDisasterReports().result)
+        return Disaster(remoteDataSource.getDisasterReports(timeperiod,admin, disaster).result)
     }
 }

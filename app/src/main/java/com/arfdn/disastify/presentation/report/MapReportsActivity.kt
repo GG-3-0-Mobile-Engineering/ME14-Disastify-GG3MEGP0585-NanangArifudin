@@ -15,6 +15,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.arfdn.disastify.databinding.ActivityMapReportsBinding
+import com.arfdn.disastify.presentation.profile.ProfileActivity
+import com.arfdn.disastify.utils.startActivity
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +26,7 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapReportsBinding
     private val disasterListViewModel: DisasterListViewModel by viewModel()
-    val chipData = arrayListOf<String>()
+    val chipData = arrayListOf<String>("flood", "haze", "fire", "wind", "volcano", "earthquake")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,12 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        with(binding){
+            layoutSearchFilter.circleImageView.setOnClickListener {
+                this@MapReportsActivity.startActivity<ProfileActivity>()
+            }
+        }
 
     }
 
@@ -53,7 +61,7 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         Log.d("DisasterData", "Log biasa")
 
-        disasterListViewModel.getDisasterReports()
+        disasterListViewModel.getDisasterReports(null,null,null)
         disasterListViewModel.disasterList.observe(this@MapReportsActivity, Observer { disasters ->
             // Data retrieval is successful, log the data here
             Log.d(
@@ -64,12 +72,10 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
             val dataJson = gson.toJson(disasters)
             Log.d("cekmapp", "onMapReady:  ${dataJson}")
 
-            disasters.result?.objects?.output?.geometries?.forEach { geo ->
+            val bottomSheetFragment = ListDisasterBottomSheetDialogFragment()
+            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
 
-                if (!(chipData.contains(geo.properties.disasterType))){
-                    chipData.add(geo.properties.disasterType)
-                Log.d("cekmapp", "onMapReady: ${chipData.size}")
-                }
+            disasters.result?.objects?.output?.geometries?.forEach { geo ->
                 val sydney =
                     LatLng(geo.coordinates[1], geo.coordinates[0])
                 mMap.addMarker(
@@ -96,6 +102,6 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, provinceNames)
         binding.layoutSearchFilter.edtSearch.setAdapter(adapter)
-        
+
     }
 }

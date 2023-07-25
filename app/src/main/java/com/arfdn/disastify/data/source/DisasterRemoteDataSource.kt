@@ -3,7 +3,7 @@ package com.arfdn.disastify.data.source
 import com.arfdn.disastify.data.model.DisasterResponse
 
 class DisasterRemoteDataSource(private val apiService: ApiService) : DisasterDataSource {
-    override suspend fun getDisasterReports(): DisasterResponse {
-        return apiService.getDisasterReports()
+    override suspend fun getDisasterReports(timeperiod: String?,admin: String?,disaster: String?): DisasterResponse {
+        return apiService.getDisasterReports(timeperiod,admin,disaster)
     }
 }

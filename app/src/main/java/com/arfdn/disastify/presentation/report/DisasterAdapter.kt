@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arfdn.disastify.data.model.DisasterDummy
 import com.arfdn.disastify.databinding.ItemDisasterBinding
-import com.arfdn.disastify.presentation.loadImage
+import com.arfdn.disastify.utils.loadImage
 
 typealias OnClickDisaster = (DisasterDummy) -> Unit
 class DisasterAdapter(private val listDisaster: List<DisasterDummy>, private val onClickDisaster: OnClickDisaster) :

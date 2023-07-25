@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/baseline_person_pin_24"/>
+
+    <TextView
+        android:text="Profil"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"/>
+    <!-- Switch untuk mengaktifkan/demakatkan tema dark mode -->
+    <TextView
+        android:text="Tema Aplikasi"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_height="wrap_content"/>
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/opt_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"/>
+        <RadioButton
+            android:id="@+id/opt_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light Mode"/>
+    </RadioGroup>
+
+</LinearLayout>

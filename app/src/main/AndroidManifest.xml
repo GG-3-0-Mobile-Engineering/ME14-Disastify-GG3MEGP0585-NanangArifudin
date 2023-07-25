@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Disastify"
         tools:targetApi="31">
-
+        <activity
+            android:name=".presentation.profile.ProfileActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

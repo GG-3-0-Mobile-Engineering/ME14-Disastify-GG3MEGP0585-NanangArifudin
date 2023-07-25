@@ -27,15 +27,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            disasterListViewModel.getDisasterReports()
+//            disasterListViewModel.getDisasterReports()
             disasterListViewModel.disasterList.observe(this@MainActivity, Observer { disasters ->
                 // Data retrieval is successful, log the data here
                 Log.d("DisasterData", "Disaster Data Retrieved: $disasters")
                 // Do further processing or display the data on the UI as needed
             })
         }
-        val bottomSheetFragment = ListDisasterBottomSheetDialogFragment()
-        bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
 
     }
 
