@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Start Time"
-            android:inputType="text"
+            android:focusable="false"
+            android:inputType="none"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -29,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="End Time"
-            android:inputType="text"
+            android:focusable="false"
+            android:inputType="none"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
     </LinearLayout>

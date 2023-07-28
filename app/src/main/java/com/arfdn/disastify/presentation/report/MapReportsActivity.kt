@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.arfdn.disastify.databinding.ActivityMapReportsBinding
 import com.arfdn.disastify.presentation.customview.DateTimePickerFragment
+import com.arfdn.disastify.presentation.customview.OnClickTimePicker
+import com.arfdn.disastify.presentation.customview.TimePickerDialog
 import com.arfdn.disastify.presentation.customview.WaitingDialog
 import com.arfdn.disastify.presentation.helper.NotificationHelper
 import com.arfdn.disastify.presentation.helper.WaterLevelCheckWorker
@@ -29,6 +31,11 @@ import com.arfdn.disastify.utils.startActivity
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
@@ -39,7 +46,7 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
     private var endTime: String? = null
     private lateinit var binding: ActivityMapReportsBinding
     private val disasterListViewModel: DisasterListViewModel by viewModel()
-    val chipData = arrayListOf<String>("input period","all","flood", "haze", "fire", "wind", "volcano", "earthquake")
+    val chipData = arrayListOf<String>("all","flood", "haze", "fire", "wind", "volcano", "earthquake")
     private val dialog by lazy{ WaitingDialog(this)}
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -75,7 +82,6 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
     }
 
     private fun shownotif() {
-        showDateTimePickerDialog()
         NotificationHelper.createNotificationChannel(this)
     }
 
@@ -83,8 +89,10 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
         mMap = googleMap
         // Add a marker in Sydney and move the camera
         Log.d("DisasterData", "Log biasa")
-
-        disasterListViewModel.getDisasterReports(null,null,null)
+        disasterListViewModel.getDisasterReports("432000",null,null)
+//        val startDate = "2023-07-01T00:00:00Z"
+//        val endDate = "2023-07-31T23:59:59Z"
+//        disasterListViewModel.getDisasterReportsByPeriod(startDate, endDate)
         disasterListViewModel.disasterList.observe(this@MapReportsActivity, Observer { disasters ->
             dialog.dismiss()
             // Data retrieval is successful, log the data here
@@ -125,12 +133,18 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
                 chip.setOnClickListener {
                     val selectedChipText = chip.text.toString()
                     val typeSelected = selectedChipText.lowercase()
-                    if (typeSelected=="all"){
-                        disasterListViewModel.getDisasterReports(null, null, null)
-                        dialog.show()
-                    } else {
-                        disasterListViewModel.getDisasterReports(null, null, typeSelected)
-                        dialog.show()
+                    when(typeSelected){
+                        "input period" -> {
+                            showDateTimePickerDialog()
+                        }
+                        "all" -> {
+                            disasterListViewModel.getDisasterReports("432000", null, null)
+                            dialog.show()
+                        }
+                        else -> {
+                            disasterListViewModel.getDisasterReports(null, null, typeSelected)
+                            dialog.show()
+                        }
                     }
                     Log.d("SelectedChip", "Selected: $selectedChipText")
                 }
@@ -162,11 +176,36 @@ class MapReportsActivity : AppCompatActivity(), OnMapReadyCallback
         val bottomSheetFragment = ListDisasterBottomSheetDialogFragment(geo)
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
-
     private fun showDateTimePickerDialog() {
-        val dateTimePickerFragment = DateTimePickerFragment(true)
-        dateTimePickerFragment.setListener(this)
-        dateTimePickerFragment.show(supportFragmentManager, "dateTimePicker")
+//        val pickerDialog = TimePickerDialog(this, supportFragmentManager, object :
+//            OnClickTimePicker {
+//            @RequiresApi(Build.VERSION_CODES.O)
+//            override fun onClickTimePicker(startTime: String, endTime: String) {
+//                Log.d("DateTimePicker", "Start Time: $startTime")
+//                Log.d("DateTimePicker", "End Time: $endTime")
+//                disasterListViewModel.getDisasterReportsByPeriod(convertDateFormat(startTime), convertDateFormat(endTime))
+//                dialog.show()
+//            }
+//        })
+//        pickerDialog.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertDateFormat(inputDate: String): String {
+        // Define the input format
+        val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX")
+
+        // Parse the input date string to an OffsetDateTime object
+        val offsetDateTime = OffsetDateTime.parse(inputDate, inputFormat)
+
+        // Convert to UTC (Zona waktu 0)
+        val utcOffsetDateTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC)
+
+        // Define the output format
+        val outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+        // Format the UTC OffsetDateTime to the desired output format
+        return outputFormat.format(utcOffsetDateTime)
     }
 
     override fun onDateTimeSet(dateTime: String, isStartTime: Boolean) {

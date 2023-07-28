@@ -6,4 +6,8 @@ class DisasterRemoteDataSource(private val apiService: ApiService) : DisasterDat
     override suspend fun getDisasterReports(timeperiod: String?,admin: String?,disaster: String?): DisasterResponse {
         return apiService.getDisasterReports(timeperiod,admin,disaster)
     }
+
+    override suspend fun getDisasterReportsByPeriod(start: String?, end: String?): DisasterResponse {
+        return apiService.getDisasterReportsByPeriod(start,end)
+    }
 }

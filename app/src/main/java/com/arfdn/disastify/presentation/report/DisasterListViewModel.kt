@@ -24,4 +24,17 @@ class DisasterListViewModel(private val useCase: DisasterUseCase) : ViewModel() 
             }
         }
     }
+
+    fun getDisasterReportsByPeriod(start: String?,end: String?) {
+        viewModelScope.launch {
+            try {
+                val disasters = useCase.getDisasterReportsByPeriod(start,end)
+                _disasterList.postValue(disasters)
+                Log.d("DisasterDataViewModel", "Disaster Data Retrieved: ${disasters.result?.type ?: "nodata"}")
+            } catch (e: Exception) {
+                // Handle error here, e.g., show an error message to the user
+            }
+        }
+    }
+
 }

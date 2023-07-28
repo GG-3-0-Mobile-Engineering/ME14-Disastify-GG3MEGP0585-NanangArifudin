@@ -12,4 +12,11 @@ interface ApiService {
         @Query("admin") admin: String?,
         @Query("disaster") disaster: String?)
     : DisasterResponse
+    @GET("reports/archive")
+    suspend fun getDisasterReportsByPeriod(
+        @Query("start") start: String?,
+        @Query("end") admin: String?
+    ): DisasterResponse
+
+
 }
